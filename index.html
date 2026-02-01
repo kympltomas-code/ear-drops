@@ -1,0 +1,171 @@
+index.html
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ušní kapky / Ear Drops</title>
+  <style>
+    :root{
+      --bg:#F58A1F;
+      --ink:rgba(18,18,18,.92);
+      --inkSoft:rgba(18,18,18,.68);
+      --shadow: 0 14px 40px rgba(0,0,0,.18);
+      --radius:18px;
+      --maxw:980px;
+      --gap:28px;
+
+      --drop-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 64 64'%3E%3Cpath d='M32 6 C32 6 50 28 50 40 C50 50 42 58 32 58 C22 58 14 50 14 40 C14 28 32 6 32 6 Z' fill='none' stroke='%23111111' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 10 2, auto;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      cursor:var(--drop-cursor);
+      overflow-x:hidden;
+    }
+
+    .stage{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:28px 18px;
+    }
+
+    .fade{
+      opacity:0;
+      transform: translateY(6px);
+      transition: opacity 360ms ease, transform 360ms ease;
+      pointer-events:none;
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:28px 18px;
+    }
+    .fade.is-active{
+      opacity:1;
+      transform: translateY(0);
+      pointer-events:auto;
+      position:relative;
+      inset:auto;
+    }
+
+    /* ===== SCREEN 1 (ucho) ===== */
+    .ear-wrap{display:grid; place-items:center; user-select:none; -webkit-tap-highlight-color:transparent;}
+    .ear-btn{
+      border:0;
+      background:transparent;
+      padding:0;
+      line-height:0;
+      cursor:pointer;
+      transition: transform 180ms ease;
+      outline:none;
+    }
+    .ear-btn:hover{ transform: scale(1.08); }
+    .ear-btn:focus-visible{
+      outline:3px solid rgba(255,255,255,.55);
+      outline-offset:10px;
+      border-radius:999px;
+    }
+
+    svg.ear{
+      width: 44px; /* velikost ucha */
+      height:auto;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.14));
+    }
+    .ear-shape{ fill:#231f20; }
+
+    /* ===== SCREEN 2 (obsah) ===== */
+    .card{
+      width:100%;
+      max-width:var(--maxw);
+      display:grid;
+      place-items:center;
+      gap:18px;
+      padding:34px 18px;
+      text-align:center;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(28px, 4.6vw, 46px);
+      letter-spacing: .2px;
+    }
+
+    .sub{
+      margin:0;
+      font-size: clamp(16px, 2.4vw, 20px);
+      color:var(--inkSoft);
+    }
+
+    .cols{
+      width:100%;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+      align-items:start;
+      margin-top: 8px;
+    }
+
+    .col{ text-align:center; padding:0 6px; }
+    .col h2{
+      margin:0 0 10px;
+      font-size:15px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:rgba(18,18,18,.74);
+    }
+    .col p{
+      margin:0;
+      line-height:1.6;
+      font-size:18px;
+      color:rgba(18,18,18,.88);
+      white-space:pre-line;
+    }
+
+    .episode{
+      margin-top: 18px;
+      font-size:16px;
+      color:rgba(18,18,18,.82);
+    }
+
+    .btn{
+      margin-top: 10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 22px;
+      border-radius:var(--radius);
+      background:#fff;
+      color:rgba(18,18,18,.92);
+      text-decoration:none;
+      font-weight:700;
+      box-shadow: var(--shadow);
+      transition: transform 160ms ease;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+
+    @media (max-width: 760px){
+      .cols{ grid-template-columns: 1fr; gap:18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .fade, .ear-btn, .btn{ transition:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="stage" aria-live="polite">
+
+    <section id="view1" class="fade is-active" aria-label="Start">
+      <div class="ear-wrap">
+        <button id="earButton" class="ear-btn" type="button" aria-label="Otevřít Ušní kapky / Open Ear Drops">
+          <svg class="ear" xmlns="http://www.w3.org/2000/svg" viewBox="81.757812 199.335938 649.34375 1001.96875" role="img" aria-hidden="true">
+            <path class="ear-shape" d="M 708.054688 441.800781 C 669.324219 306.730469 599.882812 226.476562 463.878906 204.324219 C 213.464844 166.867188 65.292969 346.800781 83.214844 523.386719 C 172.75 95.691406 565.007812 169.066406 665.441406 382.171875 C 690.285156 434.871094 703.769531 492.738281 707.351562 550.777344 C 715.316406 679.898438 672.394531 806.429688 600.058594 912.386719 C 597.351562 916.34375 405.882812 1199.683594 212.773438 1172.761719 C 157.140625 1165.003906 107.761719 1075.03125 111.550781 1014.453125 C 90.714844 1090.171875 125.117188 1175.703125 195.40625 1196.296875 C 328.773438 1235.375 531.636719 1033.992188 559.832031 1003.300781 C 663.105469 890.824219 733.167969 748.277344 731.070312 593.179688 C 730.371094 541.964844 722.15625 491.011719 708.054688 441.800781 Z" />
+            <path class="ear-shape" d="M 138.585938 920.671875 C 146.925781 949.597656 191.234375 944.164062 220.117188 935.261719 C 304.601562 909.238281 416.792969 873.792969 469.066406 795.667969 C 498.105469 752.261719 487.878906 700.78125 456.121094 662.074219 C 422.734375 621.382812 377.183594 606.800781 329.675781 589.390625 C 317.050781 584.761719 224.300781 560.898438 222.265625 549.703125 C 216.945312 520.320312 219.054688 492.5 226.707031 466.980469 C 282.441406 507.472656 368.269531 527.210938 401.234375 509.414062 C 402.792969 507.949219 414.355469 503.839844 415.769531 485.546875 C 415.789062 470.945312 399.25 444.144531 383.175781 431.019531 C 365.015625 416.480469 353.539062 415.074219 352.433594 414.628906 C 356.128906 418.492188 372.265625 431.269531 385.695312 451.363281 C 409.375 487.046875 397.671875 496.867188 371.914062 496.371094 C 309.4375 494.800781 257.566406 468.40625 230.859375 454.730469 C 248.03125 409.703125 282.792969 372.773438 324.558594 348.617188 C 325.53125 348.949219 326.378906 349.25 327.402344 349.597656 C 341.007812 354.320312 359.210938 360.214844 382.121094 369.511719 C 404.777344 379.15625 432.785156 391.796875 461.171875 415.445312 C 487.515625 437.753906 504.292969 461.414062 516.
