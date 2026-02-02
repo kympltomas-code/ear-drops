@@ -8,12 +8,11 @@
   <style>
     :root{
       --bg:#F58A1F;
-      --earSize:104px; /* uprav jen číslo */
+      --earSize:104px;     /* velikost ucha */
+      --pulseScale:1.15;   /* síla pulzu (zvětšeno) */
     }
 
-    .drop-static{ display:none; }
-
-    /* KURZOR KAPKA – NATVRDO NA CELÉ STRÁNCE */
+    /* KURZOR KAPKA – natvrdo na celé stránce */
     html, body{
       width:100%;
       height:100%;
@@ -27,7 +26,7 @@
         auto !important;
     }
 
-    /* NIKDY RUČIČKA – všude inherit */
+    /* NIKDY ručička – všechno dědí kurzor */
     *, *::before, *::after { cursor: inherit !important; }
 
     .screen{
@@ -70,50 +69,33 @@
       pointer-events:auto;
     }
 
-    /* UCHO – společné */
-    /* PULZOVÁNÍ UCHA */
-@keyframes earPulse {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.12); }
-}
-
-.ear{
-  width:var(--earSize);
-  height:var(--earSize);
-  display:block;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
-
-  animation: earPulse 1.5s ease-in-out infinite;
-  will-change: transform;
-}
-
-
-    .ear:hover{ transform: scale(1.08); }
-/* Respektuj snížené animace v systému */
-@media (prefers-reduced-motion: reduce) {
-  .ear{
-    animation: none;
-  }
-}
-
-    @media (hover: none) and (pointer: coarse){
-      .ear:active{ transform: scale(1.08); }
-    }
-
-    /* Wrapy kvůli centrování */
-    #ear, .ear-in-content{
+    /* UCHO (obrázek) */
+    .ear{
       width:var(--earSize);
       height:var(--earSize);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:block;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-user-drag:none;
+      transition: transform 180ms ease;
+      animation: earPulse 1.5s ease-in-out infinite;
     }
 
-    .ear-in-content{
-      margin: 0 auto 18px;
+    /* pulz */
+    @keyframes earPulse{
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(var(--pulseScale)); }
+    }
+
+    /* hover a tap – stejné jako pulz (konzistence) */
+    .ear:hover{ transform: scale(var(--pulseScale)); }
+    @media (hover: none) and (pointer: coarse){
+      .ear:active{ transform: scale(var(--pulseScale)); }
+    }
+
+    /* respekt k reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .ear{ animation: none; }
+      .screen{ transition: none; }
     }
 
     /* TEXTY */
@@ -121,16 +103,20 @@
       width:min(920px, 92vw);
       text-align:center;
     }
-    h1{ margin:0 0 10px; font-size:36px; font-weight:700; }
-    h2{ margin:0 0 30px; font-size:18px; font-weight:600; }
+
+    h1{ margin:0 0 10px; font-size:36px; font-weight:700; line-height:1.15; }
+    h2{ margin:0 0 28px; font-size:18px; font-weight:600; line-height:1.25; }
+
+    .en{ font-weight:500; }
 
     .cols{
       display:flex;
       justify-content:center;
       gap:40px;
-      margin:0 auto 30px;
+      margin:0 auto 26px;
       text-align:center;
     }
+
     .col{
       width:min(420px, 42vw);
       font-size:16px;
@@ -139,8 +125,15 @@
 
     .part{
       font-weight:700;
-      margin:0 0 12px;
+      margin:0 0 14px;
       letter-spacing:0.2px;
+    }
+
+    /* ucho v obsahu – přesně uprostřed nad tlačítkem */
+    .ear-back-wrap{
+      display:flex;
+      justify-content:center;
+      margin: 6px 0 14px;
     }
 
     button{
@@ -158,27 +151,55 @@
       .cols{ flex-direction:column; gap:20px; }
       .col{ width:min(560px, 92vw); }
     }
+
+    /* Desktop: dva řádky CZ/EN (bez lomítka) */
+    .title-desktop, .subtitle-desktop{ display:block; }
+    .title-mobile, .subtitle-mobile{ display:none; }
+
+    /* Mobil: jeden řádek s tečkou (bez scrollu, bez zmenšování písma) */
+    @media (max-width:480px){
+      .title-desktop, .subtitle-desktop{ display:none; }
+      .title-mobile, .subtitle-mobile{ display:block; }
+
+      /* jen mírně zhutníme mezery, NE velikosti písma */
+      h2{ margin-bottom:22px; }
+      .cols{ margin-bottom:22px; }
+    }
   </style>
 </head>
 
 <body>
   <!-- START -->
   <div class="screen" id="start" aria-label="Start">
-    <div id="ear" aria-label="Ucho">
-      <!-- 1) UCHO NA STARTU (klik -> obsah) -->
-      <img id="earStart" class="ear" src="ucho.svg" alt="Ucho" draggable="false">
-    </div>
+    <!-- ucho na startu -->
+    <img id="earStart" class="ear" src="ucho.svg" alt="Ucho" draggable="false">
   </div>
 
   <!-- CONTENT -->
   <div class="screen" id="content" aria-label="Obsah">
     <div class="content-wrap">
 
-      <!-- 2) UCHO V TEXTU (klik -> zpět na start) -->
-      
+      <!-- H1 desktop: 2 řádky -->
+      <h1 class="title-desktop">
+        Ušní kapky<br>
+        <span class="en">Ear Drops</span>
+      </h1>
 
-      <h1>Ušní kapky / Ear Drops</h1>
-      <h2>Návrat bez techniky / Returning Without Technique</h2>
+      <!-- H1 mobil: 1 řádek -->
+      <h1 class="title-mobile">
+        Ušní kapky · <span class="en">Ear Drops</span>
+      </h1>
+
+      <!-- H2 desktop: 2 řádky -->
+      <h2 class="subtitle-desktop">
+        Návrat bez techniky<br>
+        <span class="en">Returning Without Technique</span>
+      </h2>
+
+      <!-- H2 mobil: 1 řádek -->
+      <h2 class="subtitle-mobile">
+        Návrat bez techniky · <span class="en">Returning Without Technique</span>
+      </h2>
 
       <div class="cols">
         <div class="col">
@@ -194,42 +215,53 @@
       </div>
 
       <div class="part">Díl I / Part I</div>
-<div class="ear-in-content" aria-label="Zpět na start">
-  <img id="earBack" class="ear" src="ucho.svg" alt="Zpět" draggable="false">
-</div>
+
+      <!-- ucho v obsahu – uprostřed nad tlačítkem -->
+      <div class="ear-back-wrap">
+        <img id="earBack" class="ear" src="ucho.svg" alt="Zpět" draggable="false">
+      </div>
+
       <button id="get" type="button">Získat / Get it</button>
     </div>
   </div>
 
   <script>
-    const GUMROAD_URL = "https://gumroad.com/products?products_page=1";
+    const GUMROAD_URL = "https://gumroad.com/products?products_page=1"; // změň až budeš chtít
 
     function showContent(){
       document.body.classList.add("show-content");
-      const content = document.getElementById("content");
-      if (content) content.scrollTop = 0;
     }
 
-    function goStart(){
+    function showStart(){
       document.body.classList.remove("show-content");
-      const content = document.getElementById("content");
-      if (content) content.scrollTop = 0;
-    }
-
-    function addClickAndKey(el, fn){
-      if (!el) return;
-      el.addEventListener("click", fn);
-      el.setAttribute("tabindex", "0");
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") fn();
-      });
+      window.scrollTo(0, 0);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      addClickAndKey(document.getElementById("earStart"), showContent);
-      addClickAndKey(document.getElementById("earBack"), goStart);
+      const earStart = document.getElementById("earStart");
+      const earBack  = document.getElementById("earBack");
+      const btn      = document.getElementById("get");
 
-      document.getElementById("get").addEventListener("click", () => {
+      // klik na ucho (start -> obsah)
+      earStart.addEventListener("click", showContent);
+
+      // klik na ucho v obsahu (obsah -> start)
+      earBack.addEventListener("click", showStart);
+
+      // klávesnice (Enter/Space) – volitelné, ale profi
+      earStart.setAttribute("tabindex", "0");
+      earBack.setAttribute("tabindex", "0");
+      [earStart, earBack].forEach(el => {
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            el.click();
+          }
+        });
+      });
+
+      // tlačítko
+      btn.addEventListener("click", () => {
         if (!GUMROAD_URL || GUMROAD_URL === "SEM_DOPLNIM") return;
         window.location.href = GUMROAD_URL;
       });
