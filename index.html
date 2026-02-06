@@ -187,10 +187,9 @@
 
       <!-- H1 mobil: 1 řádek -->
       <h1 class="title-mobile">
-  Ušní kapky<br>
-  <span class="en">Ear Drops</span>
-</h1>
-
+        Ušní kapky<br>
+        <span class="en">Ear Drops</span>
+      </h1>
 
       <!-- H2 desktop: 2 řádky -->
       <h2 class="subtitle-desktop">
@@ -228,8 +227,8 @@
   </div>
 
   <script>
-    const GUMROAD_URL = "https://tomaskympl.gumroad.com/l/qohvjg";
- 
+    // STRIPE Payment Link (test):
+    const STRIPE_URL = "https://buy.stripe.com/test_fZufZaeYW36f8Xo0Kp1Fe00";
 
     function showContent(){
       document.body.classList.add("show-content");
@@ -251,7 +250,7 @@
       // klik na ucho v obsahu (obsah -> start)
       earBack.addEventListener("click", showStart);
 
-      // klávesnice (Enter/Space) – volitelné, ale profi
+      // klávesnice (Enter/Space)
       earStart.setAttribute("tabindex", "0");
       earBack.setAttribute("tabindex", "0");
       [earStart, earBack].forEach(el => {
@@ -263,10 +262,10 @@
         });
       });
 
-      // tlačítko
+      // tlačítko -> Stripe
       btn.addEventListener("click", () => {
-        if (!GUMROAD_URL || GUMROAD_URL === "SEM_DOPLNIM") return;
-        window.location.href = GUMROAD_URL;
+        if (!STRIPE_URL) return;
+        window.location.href = STRIPE_URL;
       });
     });
   </script>
