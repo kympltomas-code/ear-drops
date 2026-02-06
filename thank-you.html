@@ -29,14 +29,11 @@
       color:var(--text);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-      /* KURZOR KAPKA – TENČÍ (sjednoceno s indexem) */
       cursor: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'>\
 <path d='M12 2 C12 2,6 10,6 14 a6 6 0 0 0 12 0 C18 10,12 2,12 2 Z' fill='none' stroke='%23111' stroke-width='1'/>\
 </svg>") 12 12, auto;
     }
-
-    a{ cursor: inherit; }
 
     .wrap{
       min-height:100%;
@@ -56,18 +53,14 @@
       gap:16px;
     }
 
-    .ear-link{
-      text-decoration:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
     .ear{
       width:var(--earSize);
       height:var(--earSize);
       display:block;
-
       animation:pulse var(--pulseSpeed) ease-in-out infinite;
       transform-origin:50% 50%;
+      user-select:none;
+      pointer-events:none; /* důležité */
     }
 
     @keyframes pulse{
@@ -104,7 +97,6 @@
       text-decoration:none;
       font-weight:700;
       font-size:16px;
-
       white-space:nowrap;
     }
 
@@ -135,9 +127,8 @@
   <main class="wrap">
     <section class="card">
 
-      <a class="ear-link" href="index.html" aria-label="Zpět na úvod">
-        <img class="ear" src="ucho.svg" alt="Ucho / Ear">
-      </a>
+      <!-- UCHO = SYMBOL (bez odkazu) -->
+      <img class="ear" src="ucho.svg" alt="Ucho / Ear" draggable="false">
 
       <h1>Děkuji / Thank you</h1>
 
@@ -146,6 +137,7 @@
         Payment completed. You can download the ZIP now.
       </p>
 
+      <!-- JEDINÁ AKCE NA STRÁNCE -->
       <a class="btn" href="downloads/ear-drops-part-1.zip" download>
         Stáhnout ZIP / Download ZIP
       </a>
