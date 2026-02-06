@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Děkuji / Thank you – Ušní kapky / Ear Drops</title>
+
+  <style>
+    :root{
+      --bg:#F58A1F;
+      --text:#111;
+      --btnBg:#111;
+      --btnText:#fff;
+
+      --earSize:120px;
+      --pulseScale:1.12;
+      --pulseSpeed:1.8s;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html, body{
+      height:100%;
+      margin:0;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      /* KURZOR KAPKA – TENČÍ (sjednoceno s indexem) */
+      cursor: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'>\
+<path d='M12 2 C12 2,6 10,6 14 a6 6 0 0 0 12 0 C18 10,12 2,12 2 Z' fill='none' stroke='%23111' stroke-width='1'/>\
+</svg>") 12 12, auto;
+    }
+
+    a{ cursor: inherit; }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px 16px;
+      text-align:center;
+    }
+
+    .card{
+      width:100%;
+      max-width:520px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:16px;
+    }
+
+    .ear-link{
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .ear{
+      width:var(--earSize);
+      height:var(--earSize);
+      display:block;
+
+      animation:pulse var(--pulseSpeed) ease-in-out infinite;
+      transform-origin:50% 50%;
+    }
+
+    @keyframes pulse{
+      0%   { transform:scale(1); }
+      50%  { transform:scale(var(--pulseScale)); }
+      100% { transform:scale(1); }
+    }
+
+    h1{
+      margin:0;
+      font-size:22px;
+      font-weight:700;
+    }
+
+    .sub{
+      margin:0;
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+      width:100%;
+      max-width:320px;
+
+      padding:14px 16px;
+      border-radius:14px;
+
+      background:var(--btnBg);
+      color:var(--btnText);
+      text-decoration:none;
+      font-weight:700;
+      font-size:16px;
+
+      white-space:nowrap;
+    }
+
+    .btn:active{
+      transform:translateY(1px);
+    }
+
+    @media (max-width:420px){
+      :root{ --earSize:140px; }
+      .btn{
+        max-width:300px;
+        font-size:15px;
+        padding:12px 14px;
+      }
+    }
+
+    @media (max-width:340px){
+      .btn{
+        max-width:280px;
+        font-size:14px;
+        padding:11px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card">
+
+      <a class="ear-link" href="index.html" aria-label="Zpět na úvod">
+        <img class="ear" src="ucho.svg" alt="Ucho / Ear">
+      </a>
+
+      <h1>Děkuji / Thank you</h1>
+
+      <p class="sub">
+        Platba proběhla. Teď si můžeš stáhnout ZIP.<br>
+        Payment completed. You can download the ZIP now.
+      </p>
+
+      <a class="btn" href="downloads/ear-drops-part-1.zip" download>
+        Stáhnout ZIP / Download ZIP
+      </a>
+
+    </section>
+  </main>
+</body>
+</html>
